@@ -58,7 +58,7 @@
   .trust span::before{content:"✔";color:#59d6bd;margin-right:7px}
 
   /* Sections */
-  section{padding:64px 0}
+  section{padding:64px 0;scroll-margin-top:64px}
   .kicker{color:var(--teal);font-weight:800;text-transform:uppercase;font-size:1.05rem;letter-spacing:1.6px}
   h2{font-size:1.75rem;color:var(--navy);margin:6px 0 8px;letter-spacing:-.3px}
   .sub{color:var(--muted);max-width:46em}
@@ -101,6 +101,54 @@
   .notif b{display:block;font-size:.76rem;color:var(--navy)}
   .notif span{font-size:.7rem;color:var(--muted)}
   .notif.warn{border-left-color:var(--amber)}
+
+  /* DBS Link */
+  .badge-live{display:inline-block;background:var(--teal-soft);color:var(--teal);font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:8px;vertical-align:middle}
+  .link-sec{border-top:1px solid var(--line)}
+  .link-list{list-style:none;margin:14px 0 16px}
+  .link-list li{position:relative;padding-left:26px;margin-bottom:7px;font-size:.95rem;color:var(--ink)}
+  .link-list li::before{content:"✔";position:absolute;left:0;color:var(--teal);font-weight:800}
+  .link-note{font-size:.9rem;color:var(--muted);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;padding:12px 14px;margin-bottom:18px}
+  .link-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .link-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 10px}
+  .lm{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+  .lm > b{display:block;color:var(--navy);font-size:.88rem;margin-bottom:3px}
+  .lm span{display:block;font-size:.8rem;color:var(--muted);line-height:1.4}
+  .lm.best{border:2px solid var(--teal)}
+  .lm.best em{font-style:normal;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px;background:var(--teal);color:#fff;border-radius:20px;padding:2px 7px;margin-left:4px;vertical-align:middle}
+  .link-fine{font-size:.82rem;color:var(--muted);margin-bottom:18px}
+  .nav-links a{white-space:nowrap}
+  .browser{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px rgba(18,35,63,.18);overflow:hidden;justify-self:center}
+  .browser .bar{display:flex;align-items:center;gap:6px;background:#eef3f9;padding:9px 12px;border-bottom:1px solid var(--line)}
+  .browser .bar i{width:9px;height:9px;border-radius:50%;background:#cfd9e6;display:inline-block}
+  .browser .bar span{margin-left:8px;flex:1;background:#fff;border-radius:6px;font-size:.72rem;color:var(--muted);padding:3px 9px}
+  .browser .body{padding:14px;background:#f7fafd}
+  .browser .row{background:#fff;border-radius:9px;padding:10px 12px;margin-bottom:9px;box-shadow:0 2px 6px rgba(18,35,63,.07);border-left:4px solid var(--teal)}
+  .browser .row.warn{border-left-color:var(--amber)}
+  .browser .row b{display:block;font-size:.78rem;color:var(--navy)}
+  .browser .row span{font-size:.7rem;color:var(--muted)}
+  .browser .prog{height:6px;background:#e3eaf3;border-radius:6px;margin-top:6px;overflow:hidden}
+  .browser .prog em{display:block;height:100%;background:var(--teal);border-radius:6px}
+
+  /* Offres */
+  .plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px;align-items:stretch}
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;display:flex;flex-direction:column;position:relative}
+  .plan.best{border:2px solid var(--teal);box-shadow:0 10px 30px rgba(23,162,137,.15)}
+  .plan .ribbon{position:absolute;top:-13px;left:18px;background:var(--teal);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.5px;padding:3px 11px;border-radius:20px}
+  .plan h3{color:var(--navy);font-size:1.05rem;margin:4px 0 2px}
+  .plan .for{font-size:.82rem;color:var(--muted);margin-bottom:10px}
+  .plan ul{list-style:none;margin:0 0 12px;flex:1}
+  .plan li{position:relative;padding-left:20px;font-size:.84rem;margin-bottom:6px;line-height:1.4}
+  .plan li::before{content:"✔";position:absolute;left:0;color:var(--teal);font-weight:800}
+  .plan li.no{color:var(--muted)}
+  .plan li.no::before{content:"—";color:var(--muted2,#9aa9bc)}
+  .st{display:inline-block;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.3px;align-self:flex-start}
+  .st.ok{background:var(--teal-soft);color:var(--teal)}
+  .st.pilot{background:#e6f0fb;color:#1d4b82}
+  .st.soon{background:#fdf1dd;color:#b07514}
+  .plans-notes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .plans-notes div{font-size:.86rem;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .plans-notes b{color:var(--navy)}
 
   /* Roadmap */
   .road{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -153,7 +201,7 @@
     .hero h1{font-size:1.85rem}
     .cards3,.fgrid,.road{grid-template-columns:1fr}
     .sov .wrap{grid-template-columns:1fr}
-    .valid,.ai2,.pager-grid{grid-template-columns:1fr}
+    .valid,.ai2,.pager-grid,.link-modes,.plans,.plans-notes{grid-template-columns:1fr}
     .nav-links{display:none}
   }
 
@@ -179,6 +227,8 @@
       <a href="#fonctions">Fonctionnalités</a>
       <a href="#ia">IA</a>
       <a href="#pager">Mobile</a>
+      <a href="#link">DBS Link</a>
+      <a href="#offres">Offres</a>
       <a href="#roadmap">Feuille de route</a>
     </nav>
     <a class="btn btn-primary" href="#contact">Demander une démo</a>
@@ -304,6 +354,7 @@
     <h2>Votre entreprise. Vos données. Point.</h2>
     <p>DBS est <b>on-premises first</b> : le logiciel et la base de données vivent sur votre machine, dans vos murs. L'assistant IA tourne localement — rien ne quitte l'entreprise sans votre autorisation.</p>
     <p>Pas de dépendance au cloud, pas de facture qui explose, pas de données commerciales chez un tiers. L'application fonctionne même sans internet.</p>
+    <p>Besoin de partager avec vos clients&nbsp;? <b>DBS Link</b> est optionnel et ne publie que ce que vous choisissez — rien d'autre ne quitte l'entreprise.</p>
     <div class="stat">
       <div><b>0</b><span>octet envoyé sans votre autorisation</span></div>
       <div><b>100%</b><span>fonctionnel hors-ligne</span></div>
@@ -332,6 +383,108 @@
   </div>
 </section>
 
+<section id="link" class="link-sec">
+  <div class="wrap pager-grid">
+    <div>
+      <div class="kicker">DBS Link <span class="badge-live">EN PRODUCTION · PILOTE</span></div>
+      <h2>Vos partenaires et clients suivent vos commandes. Sans e-mail, sans ressaisie.</h2>
+      <p>DBS Link est le portail web sécurisé qui relie votre atelier à vos donneurs d'ordre, partenaires et clients. Chacun voit, en temps réel, <b>uniquement ce que vous l'autorisez à voir</b>.</p>
+      <ul class="link-list">
+        <li>Suivi des commandes et des étapes de production, alertes en cas de retard ou de blocage</li>
+        <li>Documents et fiches techniques partagés, avec versions et approbation</li>
+        <li>Contrôles qualité AQL, photos des défauts et certificats</li>
+        <li>Demandes de fournitures avec vos sous-traitants : envoyé, reçu, écarts</li>
+        <li>Colisage : scan des cartons depuis la tablette, export Excel et PDF</li>
+        <li>Rôles Interne, Partenaire et Client · double authentification (2FA)</li>
+      </ul>
+      <div class="link-modes">
+        <div class="lm"><b>Seul</b><span>Mode autonome, sans ERP, aux fonctions limitées par rapport à DBS ERP. <i>Bientôt.</i></span></div>
+        <div class="lm"><b>Avec votre ERP actuel</b><span>Extension en ligne de votre ERP : un agent lit votre base en <b>lecture seule</b> et ne publie que les données choisies.</span></div>
+        <div class="lm best"><b>Avec DBS ERP <em>recommandé</em></b><span>L'ERP et le portail partagent les mêmes données, sans double saisie. <i>Intégration en cours.</i></span></div>
+      </div>
+      <p class="link-fine">DBS Link ne modifie jamais votre système · données publiées hébergées dans l'Union européenne.</p>
+      <div class="link-cta">
+        <a class="btn btn-primary" href="https://link.dominos-dbs.com" target="_blank" rel="noopener">Se connecter à DBS Link →</a>
+        <a class="btn btn-ghost" href="#contact">Demander une démo</a>
+      </div>
+    </div>
+    <div class="browser" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>🔒 link.dominos-dbs.com</span></div>
+      <div class="body">
+        <div class="row"><b>OF 2026-0412 · Montage</b><span>Étape 3 / 5 — 62 % · livraison prévue le 24/10</span><div class="prog"><em style="width:62%"></em></div></div>
+        <div class="row"><b>✅ Contrôle AQL 2,5 · Lot 14</b><span>Conforme — certificat disponible</span></div>
+        <div class="row warn"><b>⚠ Fournitures · Fil polyester blanc</b><span>Envoyé 2 000 m · reçu 1 880 m — écart signalé</span></div>
+        <div class="row"><b>📦 Colisage · Commande 2026-0398</b><span>48 / 52 cartons scannés</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="offres" class="features">
+  <div class="wrap">
+    <div class="kicker">Offres</div>
+    <h2>Un seul cœur, quatre façons de démarrer</h2>
+    <p class="sub">Chaque offre fonctionne seule ou se combine aux autres : commencez par ce dont vous avez besoin aujourd'hui, ajoutez le reste demain sans changer d'outil. Tarifs sur demande.</p>
+    <div class="plans">
+      <div class="plan best">
+        <span class="ribbon">RECOMMANDÉ</span>
+        <h3>Pack complet DBS</h3>
+        <div class="for">L'entreprise qui veut tout, au même endroit.</div>
+        <ul>
+          <li>DBS ERP complet, installé chez vous</li>
+          <li>DBS Link couplé à l'ERP : mêmes données, sans double saisie</li>
+          <li>DBS Pager, au bureau comme à l'extérieur</li>
+          <li>Copie de sauvegarde hors-site</li>
+          <li>Paiement échelonné possible</li>
+        </ul>
+        <span class="st soon">Intégration en cours</span>
+      </div>
+      <div class="plan">
+        <h3>DBS ERP hors-ligne</h3>
+        <div class="for">Souveraineté totale, 100 % dans vos murs.</div>
+        <ul>
+          <li>Licence perpétuelle : achetée une fois, pas louée</li>
+          <li>Stocks, production, sous-traitance, facturation TEIF, IA locale</li>
+          <li>DBS Pager sur le réseau de l'entreprise</li>
+          <li>Installation, formation et jusqu'à 2 mises à jour par an</li>
+          <li>100 % hors-ligne : aucune donnée ne quitte l'entreprise</li>
+        </ul>
+        <span class="st ok">Disponible</span>
+      </div>
+      <div class="plan">
+        <h3>DBS Link sur votre ERP</h3>
+        <div class="for">Vous avez déjà un ERP et voulez y connecter vos partenaires.</div>
+        <ul>
+          <li>Connecteur en lecture seule sur votre base existante</li>
+          <li>Portail commandes, production, qualité, documents, colisage</li>
+          <li>3 organisations externes incluses, utilisateurs illimités</li>
+          <li>Évolutif vers le Pack complet</li>
+        </ul>
+        <span class="st pilot">Pilote · sur demande</span>
+      </div>
+      <div class="plan">
+        <h3>DBS Link autonome</h3>
+        <div class="for">Vous n'avez pas d'ERP et voulez d'abord collaborer.</div>
+        <ul>
+          <li>Portail en ligne, saisie directe des commandes et du suivi</li>
+          <li>Les mêmes modules de collaboration que DBS Link</li>
+          <li>3 organisations externes incluses, utilisateurs illimités</li>
+          <li class="no">Fonctions limitées par rapport à DBS ERP</li>
+        </ul>
+        <span class="st soon">Bientôt</span>
+      </div>
+    </div>
+    <div class="plans-notes">
+      <div><b>Vos partenaires ne paient rien.</b> Les clients et partenaires que vous invitez accèdent gratuitement. Jamais de prix par utilisateur.</div>
+      <div><b>Évolutif sans perte.</b> Passez de DBS Link au Pack complet : les frais de mise en place déjà payés sont déduits.</div>
+      <div><b>Essayez avant de choisir.</b> DBS ERP s'essaie gratuitement pendant 15 jours, sans engagement ni carte bancaire.</div>
+    </div>
+    <div class="cta-row" style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-primary" href="#contact">Parler de mon projet</a>
+    </div>
+  </div>
+</section>
+
 <section id="roadmap">
   <div class="wrap">
     <div class="kicker">Feuille de route</div>
@@ -341,7 +494,7 @@
       <div class="step now">
         <span class="n">AUJOURD'HUI</span>
         <h3>ERP souverain + IA locale</h3>
-        <p>Stocks, production, sous-traitance, facturation conforme TEIF, assistant IA local, Pager Android (mode local). Disponible au téléchargement dès aujourd'hui — utilisable sur PC, tablette et téléphone via le navigateur.</p>
+        <p>Stocks, production, sous-traitance, facturation conforme TEIF, assistant IA local, Pager Android (mode local), portail partenaires et clients DBS Link (pilote). Disponible au téléchargement dès aujourd'hui — utilisable sur PC, tablette et téléphone via le navigateur.</p>
       </div>
       <div class="step">
         <span class="n">PHASE 2</span>

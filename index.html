@@ -772,6 +772,132 @@
 </script>
 
 
+<!-- ── Transitions : apparition au défilement, menu actif, progression ─────── -->
+<style>
+  /* Reading progress + header state */
+  #scroll-prog{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--teal),#59d6bd);z-index:60;pointer-events:none}
+  header{transition:box-shadow .3s ease}
+  header.scrolled{box-shadow:0 6px 24px rgba(13,35,68,.12)}
+  .nav-links{position:relative}
+  .nav-links a{transition:color .25s ease}
+  .nav-links a.active{color:var(--navy)}
+  #nav-ink{position:absolute;bottom:-8px;height:3px;border-radius:3px;background:var(--teal);left:0;width:0;opacity:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+  /* Title glow when arriving from the menu */
+  h2.arrive{animation:arrive 1.4s ease}
+  @keyframes arrive{0%{text-shadow:0 0 0 rgba(23,162,137,0)}30%{text-shadow:0 0 18px rgba(23,162,137,.55)}100%{text-shadow:0 0 0 rgba(23,162,137,0)}}
+  /* Back to top */
+  #to-top{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 8px 20px rgba(13,35,68,.3);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s,transform .3s;z-index:55}
+  #to-top.on{opacity:1;transform:none;pointer-events:auto}
+
+  /* Reveal on scroll — only when JS is running and motion is allowed */
+  html.fx .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+  html.fx .rv.in{opacity:1;transform:none}
+  /* Dominoes tip into place */
+  html.fx .dom.rv{transform:perspective(600px) rotateX(-70deg) translateY(-10px);transform-origin:50% 100%;transition:opacity .5s ease,transform .8s cubic-bezier(.3,1.5,.5,1);transition-delay:var(--d,0s)}
+  html.fx .dom.rv.in{transform:none}
+  #ecosysteme{overflow-x:clip}
+  /* Hero entrance */
+  html.fx .hero .hero-tag,html.fx .hero h1,html.fx .hero p.lead,html.fx .hero .cta-row,html.fx .hero .trust,html.fx .hero .hero-logo{opacity:0;transform:translateY(18px);animation:heroIn .8s cubic-bezier(.2,.8,.2,1) forwards}
+  html.fx .hero h1{animation-delay:.12s} html.fx .hero p.lead{animation-delay:.24s}
+  html.fx .hero .cta-row{animation-delay:.36s} html.fx .hero .trust{animation-delay:.48s}
+  html.fx .hero .hero-logo{animation:heroLogo 1s cubic-bezier(.2,.8,.2,1) .2s forwards}
+  @keyframes heroIn{to{opacity:1;transform:none}}
+  @keyframes heroLogo{from{opacity:0;transform:translateY(24px) scale(.94)}to{opacity:1;transform:none}}
+  /* Gentle lift on cards */
+  .card,.axis,.plan,.step,.dom,.p-card{transition:transform .25s ease,box-shadow .25s ease}
+  .card:hover,.axis:hover,.plan:hover,.step:hover,.dom:hover,.p-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(18,35,63,.10)}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .card:hover,.axis:hover,.plan:hover,.step:hover,.dom:hover,.p-card:hover{transform:none}
+  }
+</style>
+
+<div id="scroll-prog" aria-hidden="true"></div>
+<button id="to-top" type="button" aria-label="Revenir en haut">↑</button>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var header = document.querySelector("header"), prog = document.getElementById("scroll-prog"), top = document.getElementById("to-top");
+
+  // ── Reveal on scroll (skipped entirely for reduced motion or old browsers)
+  if (!reduce && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("fx");
+    var groups = [".kicker", "section h2", ".sub", ".axis", ".dom", ".steps5 .step", ".road .step", ".cards3 .card",
+      ".principles > div", ".fgrid .feat", ".plan", ".plans-notes > div", ".tool-row", ".p-card", ".rev-card", ".rev-form", "#en ul li"];
+    var els = document.querySelectorAll(groups.join(","));
+    els.forEach(function (el) {
+      if (el.closest(".hero") || el.closest("#gd-modal")) return;
+      el.classList.add("rv");
+      var sib = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (c) { return c.classList.contains("rv") || c.matches(groups.join(",")); }) : [];
+      var i = sib.indexOf(el);
+      if (i > 0) el.style.setProperty("--d", Math.min(i, 8) * 0.09 + "s");
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target; el.classList.add("in"); io.unobserve(el);
+        // once revealed, drop the reveal styles so hover lifts stay instant
+        setTimeout(function () { el.classList.remove("rv", "in"); el.style.removeProperty("--d"); }, 1700);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+    // safety net: never leave content hidden (e.g. printing, odd browsers)
+    setTimeout(function () { document.querySelectorAll(".rv:not(.in)").forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight) el.classList.add("in"); }); }, 2500);
+    window.addEventListener("beforeprint", function () { document.querySelectorAll(".rv").forEach(function (el) { el.classList.add("in"); }); });
+  }
+
+  // ── Menu: active section, sliding underline, title glow on arrival
+  var links = Array.prototype.slice.call(document.querySelectorAll(".nav-links a[href^='#']"));
+  var nav = document.querySelector(".nav-links"), ink = document.createElement("span");
+  ink.id = "nav-ink"; if (nav) nav.appendChild(ink);
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  function moveInk(a) {
+    if (!a || !nav) { ink.style.opacity = 0; return; }
+    ink.style.opacity = 1; ink.style.width = a.offsetWidth + "px"; ink.style.transform = "translateX(" + a.offsetLeft + "px)";
+  }
+  function spy() {
+    var y = window.scrollY + 120, cur = null;
+    targets.forEach(function (t, i) { if (t && t.offsetTop <= y) cur = i; });
+    links.forEach(function (a, i) { a.classList.toggle("active", i === cur); });
+    moveInk(cur === null ? null : links[cur]);
+  }
+  links.forEach(function (a, i) {
+    a.addEventListener("click", function () {
+      var h = targets[i] && targets[i].querySelector("h2");
+      if (!h || reduce) return;
+      setTimeout(function () { h.classList.remove("arrive"); void h.offsetWidth; h.classList.add("arrive"); }, 450);
+    });
+  });
+
+  // ── Progress bar, header shadow, back-to-top
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, scrollY / max) : 0) + ")";
+      header.classList.toggle("scrolled", scrollY > 10);
+      top.classList.toggle("on", scrollY > innerHeight * 1.2);
+      spy(); ticking = false;
+    });
+  }
+  // backup: reveal anything on screen shortly after scrolling stops, even if animation frames are throttled
+  var settle = 0;
+  function revealVisible() {
+    document.querySelectorAll(".rv:not(.in)").forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) el.classList.add("in"); });
+    var max = document.documentElement.scrollHeight - innerHeight;
+    prog.style.transform = "scaleX(" + (max > 0 ? Math.min(1, scrollY / max) : 0) + ")";
+    header.classList.toggle("scrolled", scrollY > 10); top.classList.toggle("on", scrollY > innerHeight * 1.2); spy();
+  }
+  window.addEventListener("scroll", function () { clearTimeout(settle); settle = setTimeout(revealVisible, 160); }, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  top.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+  onScroll();
+})();
+</script>
+
 <!-- ── Domino doré : petit jeu caché (10 % de remise) ─────────────────── -->
 <style>
   #gd{position:fixed;left:0;top:0;width:92px;height:76px;z-index:9000;cursor:pointer;display:none;touch-action:manipulation;

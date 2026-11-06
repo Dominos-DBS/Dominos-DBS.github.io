@@ -791,14 +791,14 @@
   html.fx .fade.in{opacity:1;transform:none}
 
   /* Cards: each one stands tilted, then topples into place after the one before it */
-  html.fx .tp{opacity:0;transform-origin:100% 100%;transform:translate(-14px,-34px) rotate(-24deg)}
-  html.fx .go > .tp{animation:topple .62s cubic-bezier(.45,0,.55,1) forwards;animation-delay:calc(var(--i) * .16s)}
-  html.fx .go.slow > .tp{animation-duration:.8s;animation-delay:calc(var(--i) * .3s)}
+  html.fx .tp{opacity:0;transform-origin:100% 100%;transform:translate(-30px,-70px) rotate(-38deg)}
+  html.fx .go > .tp{animation:topple 1s cubic-bezier(.45,0,.55,1) forwards;animation-delay:calc(var(--i) * .32s)}
+  html.fx .go.slow > .tp{animation-duration:1.15s;animation-delay:calc(var(--i) * .45s)}
   @keyframes topple{
-    0%  {opacity:0;transform:translate(-14px,-34px) rotate(-24deg)}
-    15% {opacity:1}
-    70% {transform:translate(0,0) rotate(2.5deg)}   /* lands, rocks a little past */
-    85% {transform:translate(0,0) rotate(-1deg)}
+    0%  {opacity:0;transform:translate(-30px,-70px) rotate(-38deg)}
+    12% {opacity:1}
+    68% {transform:translate(0,0) rotate(4deg)}     /* lands, rocks a little past */
+    84% {transform:translate(0,0) rotate(-1.5deg)}
     100%{opacity:1;transform:none}
   }
   html.fx #ecosysteme .go.slow > .tp{transform-origin:100% 100%}
@@ -852,14 +852,14 @@
         // landed: drop the animation so hover lifts work normally
         Array.prototype.forEach.call(el.children, function (c) { c.classList.remove("tp"); });
         el.classList.add("landed");
-      }, (slow ? 300 : 160) * Math.min(n, 10) + (slow ? 800 : 620) + 80);
+      }, (slow ? 450 : 320) * Math.min(n, 10) + (slow ? 1150 : 1000) + 80);
     }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
-    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+    }, { rootMargin: "0px 0px -20% 0px", threshold: 0.4 });
     watched.forEach(function (el) { io.observe(el); });
     window.__dbsReveal = function () {
-      watched.forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) show(el); });
+      watched.forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight * .75 && r.bottom > innerHeight * .15) show(el); });
     };
     setTimeout(window.__dbsReveal, 1500);
     window.addEventListener("beforeprint", function () { watched.forEach(show); });

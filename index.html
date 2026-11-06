@@ -786,7 +786,6 @@
   .gd-box{background:#fff;border-radius:18px;max-width:420px;width:100%;padding:28px 26px 22px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35);position:relative;border-top:6px solid #e8a33d}
   .gd-box h3{color:var(--navy);font-size:1.35rem;margin:8px 0 6px}
   .gd-box p{color:var(--muted);font-size:.95rem;margin-bottom:12px}
-  .gd-code{display:inline-block;font-weight:900;letter-spacing:3px;font-size:1.2rem;color:var(--navy);background:#fdf1dd;border:2px dashed #e8a33d;border-radius:10px;padding:8px 16px;margin:4px 0 16px}
   .gd-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   .gd-close{position:absolute;top:8px;right:12px;border:0;background:none;font-size:1.5rem;color:var(--muted);cursor:pointer;line-height:1}
   .gd-fine{font-size:.78rem;color:var(--muted);margin-top:14px}
@@ -799,12 +798,14 @@
         <stop offset="0" stop-color="#ffe08a"/><stop offset=".55" stop-color="#e8a33d"/><stop offset="1" stop-color="#b8771c"/>
       </linearGradient>
     </defs>
-    <g class="wl"><path d="M22 22 C10 8, 0 10, 2 20 C6 18, 10 22, 8 27 C13 24, 17 27, 22 25 Z" fill="#fff" stroke="#cfd9e6" stroke-width="1"/></g>
-    <g class="wr"><path d="M42 22 C54 8, 64 10, 62 20 C58 18, 54 22, 56 27 C51 24, 47 27, 42 25 Z" fill="#fff" stroke="#cfd9e6" stroke-width="1"/></g>
+    <g transform="translate(3.5 0)"><g class="wl"><path d="M22 22 C10 8, 0 10, 2 20 C6 18, 10 22, 8 27 C13 24, 17 27, 22 25 Z" fill="#fff" stroke="#cfd9e6" stroke-width="1"/></g></g>
+    <g transform="translate(-3.5 0)"><g class="wr"><path d="M42 22 C54 8, 64 10, 62 20 C58 18, 54 22, 56 27 C51 24, 47 27, 42 25 Z" fill="#fff" stroke="#cfd9e6" stroke-width="1"/></g></g>
+    <g transform="translate(32 25) scale(.68) translate(-32 -25)">
     <rect x="21" y="8" width="22" height="34" rx="5" fill="url(#gdg)" stroke="#8a5a14" stroke-width="1.5"/>
     <line x1="23" y1="25" x2="41" y2="25" stroke="#8a5a14" stroke-width="1.5"/>
     <circle cx="32" cy="16.5" r="2.6" fill="#14335f"/>
     <circle cx="27" cy="30" r="2.2" fill="#14335f"/><circle cx="37" cy="30" r="2.2" fill="#14335f"/><circle cx="32" cy="36" r="2.2" fill="#14335f"/>
+    </g>
   </svg>
 </button>
 
@@ -813,8 +814,7 @@
     <button class="gd-close" type="button" aria-label="Fermer">×</button>
     <div style="font-size:2.2rem">🎉</div>
     <h3 id="gd-title">Bravo, vous avez attrapé le domino doré !</h3>
-    <p>Vous gagnez <b>10 % de remise</b> sur votre première offre DBS. Contactez-nous avec ce code pour en profiter :</p>
-    <div class="gd-code">DOMINO10</div>
+    <p>Vous gagnez <b>10 % de remise</b> sur votre première offre DBS. Contactez-nous pour en profiter :</p>
     <div class="gd-actions">
       <a class="btn btn-primary" id="gd-wa" target="_blank" rel="noopener">💬 Par WhatsApp</a>
       <a class="btn btn-ghost" id="gd-mail">📧 Par e-mail</a>
@@ -825,12 +825,11 @@
 
 <script>
 (function () {
-  var CODE = "DOMINO10";
-  var MSG = "Bonjour, j'ai attrapé le domino doré sur dominos-dbs.com ! Mon code de remise : " + CODE;
+  var MSG = "Bonjour, j'ai attrapé le domino doré sur dominos-dbs.com et je souhaite profiter de mes 10 % de remise.";
   var gd = document.getElementById("gd"), modal = document.getElementById("gd-modal");
   document.getElementById("gd-wa").href = "https://wa.me/21695116617?text=" + encodeURIComponent(MSG);
   document.getElementById("gd-mail").href = "mailto:contact@dominos-dbs.com?subject=" +
-    encodeURIComponent("Domino doré : code " + CODE) + "&body=" + encodeURIComponent(MSG);
+    encodeURIComponent("Domino doré : 10 % de remise") + "&body=" + encodeURIComponent(MSG);
 
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -878,7 +877,7 @@
     gd.style.transform = "translate(" + (x - 46) + "px," + (y - 38) + "px) rotate(" + tilt.toFixed(1) + "deg)";
     raf = requestAnimationFrame(step);
   }
-  function land() { flying = false; gd.style.display = "none"; schedule(rnd(25000, 40000)); }
+  function land() { flying = false; gd.style.display = "none"; schedule(5000); }
   function schedule(ms) { setTimeout(flight, ms); }
 
   gd.addEventListener("click", function () {
@@ -892,7 +891,7 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
 
   window.__dbsGoldenDomino = { fly: flight };
-  schedule(15000);
+  schedule(5000);
 })();
 </script>
 

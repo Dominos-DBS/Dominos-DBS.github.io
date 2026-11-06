@@ -774,8 +774,8 @@
 
 <!-- ── Domino doré : petit jeu caché (10 % de remise) ─────────────────── -->
 <style>
-  #gd{position:fixed;left:0;top:0;width:64px;height:48px;z-index:9000;cursor:pointer;display:none;
-    border:0;background:none;padding:0;filter:drop-shadow(0 6px 10px rgba(13,35,68,.35));will-change:transform}
+  #gd{position:fixed;left:0;top:0;width:92px;height:76px;z-index:9000;cursor:pointer;display:none;touch-action:manipulation;
+    border:0;background:none;padding:14px;filter:drop-shadow(0 6px 10px rgba(13,35,68,.35));will-change:transform}
   #gd svg{width:100%;height:100%;overflow:visible}
   #gd .wl{transform-origin:22px 22px;animation:gdflap .18s ease-in-out infinite alternate}
   #gd .wr{transform-origin:42px 22px;animation:gdflap2 .18s ease-in-out infinite alternate}
@@ -836,26 +836,49 @@
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce || store("dbs-golden-domino") === "caught") return;
 
-  var flying = false, raf = 0, t0 = 0, dur = 0, P = [];
+  var flying = false, raf = 0, segs = [], si = 0, segT0 = 0, lastX = null, tilt = 0;
   function rnd(a, b) { return a + Math.random() * (b - a); }
-  function bez(p0, p1, p2, p3, t) { var u = 1 - t; return u*u*u*p0 + 3*u*u*t*p1 + 3*u*t*t*p2 + t*t*t*p3; }
+  // Catmull-Rom spline: smooth curve through the waypoints
+  function cr(p0, p1, p2, p3, t) { var t2 = t * t, t3 = t2 * t; return .5 * (2 * p1 + (p2 - p0) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (3 * p1 - p0 - 3 * p2 + p3) * t3); }
+  // slow into each turn, speed up in between
+  function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
   function flight() {
     if (flying || document.hidden || modal.classList.contains("on")) return schedule(8000);
-    var W = window.innerWidth, H = window.innerHeight, fromLeft = Math.random() < .5;
-    var y0 = rnd(.15, .75) * H, y3 = rnd(.15, .75) * H;
-    P = [[fromLeft ? -70 : W + 10, y0], [rnd(.2, .5) * W, rnd(.05, .95) * H], [rnd(.5, .8) * W, rnd(.05, .95) * H], [fromLeft ? W + 10 : -70, y3]];
-    if (!fromLeft) { var a = P[1]; P[1] = P[2]; P[2] = a; }
-    dur = rnd(5500, 7500); t0 = performance.now(); flying = true; gd.style.display = "block";
+    var W = window.innerWidth, H = window.innerHeight, L = Math.random() < .5, n = Math.round(rnd(3, 5));
+    var pts = [[L ? -160 : W + 160, rnd(.2, .7) * H], [L ? -60 : W + 60, rnd(.2, .7) * H]];
+    for (var i = 1; i <= n; i++) {
+      var f = i / (n + 1);
+      pts.push([(L ? f : 1 - f) * W + rnd(-.08, .08) * W, rnd(.15, .85) * H]);
+    }
+    pts.push([L ? W + 60 : -60, rnd(.2, .7) * H], [L ? W + 160 : -160, rnd(.2, .7) * H]);
+    var k1 = Math.max(.8, Math.min(1.45, W / 1366));
+    segs = [];
+    for (var k = 1; k < pts.length - 2; k++) {
+      var d = Math.hypot(pts[k + 1][0] - pts[k][0], pts[k + 1][1] - pts[k][1]);
+      segs.push({ p: [pts[k - 1], pts[k], pts[k + 1], pts[k + 2]],
+        dur: Math.max(1100, d / (rnd(95, 160) * k1) * 1000),   // ~95-160 px/s, scaled to screen width
+        hover: k < pts.length - 3 && Math.random() < .5 ? rnd(400, 1100) : 0 });
+    }
+    si = 0; segT0 = performance.now(); lastX = null; flying = true; gd.style.display = "block";
     raf = requestAnimationFrame(step);
   }
   function step(now) {
-    var t = Math.min(1, (now - t0) / dur);
-    var x = bez(P[0][0], P[1][0], P[2][0], P[3][0], t), y = bez(P[0][1], P[1][1], P[2][1], P[3][1], t) + Math.sin(now / 160) * 6;
-    gd.style.transform = "translate(" + x + "px," + y + "px)";
-    if (t < 1) raf = requestAnimationFrame(step); else land();
+    var g = segs[si], e = now - segT0, t;
+    if (e >= g.dur + g.hover) {
+      si++; segT0 = now;
+      if (si >= segs.length) return land();
+      g = segs[si]; e = 0;
+    }
+    t = e < g.dur ? ease(e / g.dur) : 1;
+    var x = cr(g.p[0][0], g.p[1][0], g.p[2][0], g.p[3][0], t);
+    var y = cr(g.p[0][1], g.p[1][1], g.p[2][1], g.p[3][1], t) + Math.sin(now / 220) * (e < g.dur ? 5 : 9);
+    if (lastX !== null) tilt += (Math.max(-16, Math.min(16, (x - lastX) * 3)) - tilt) * .12;
+    lastX = x;
+    gd.style.transform = "translate(" + (x - 46) + "px," + (y - 38) + "px) rotate(" + tilt.toFixed(1) + "deg)";
+    raf = requestAnimationFrame(step);
   }
-  function land() { flying = false; gd.style.display = "none"; schedule(rnd(35000, 60000)); }
+  function land() { flying = false; gd.style.display = "none"; schedule(rnd(25000, 40000)); }
   function schedule(ms) { setTimeout(flight, ms); }
 
   gd.addEventListener("click", function () {
@@ -869,7 +892,7 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
 
   window.__dbsGoldenDomino = { fly: flight };
-  schedule(20000);
+  schedule(15000);
 })();
 </script>
 

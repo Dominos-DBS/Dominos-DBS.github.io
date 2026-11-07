@@ -277,6 +277,23 @@
   .tool-row h3.tool-h{color:var(--navy);font-size:1.3rem;margin:4px 0 8px}
   .plan .chips{margin-bottom:8px}
   .fine{font-size:.85rem;color:var(--muted);margin-top:14px}
+  /* ── Mobile: centred, balanced layout ─────────────────────────── */
+  .dom{grid-template-rows:auto 1fr}
+  @media(max-width:860px){
+    .hero .wrap > div:first-child{text-align:center}
+    .hero-tag{justify-content:center;width:100%;letter-spacing:1.6px;font-size:.82rem;gap:4px 10px}
+    .hero p.lead{margin-left:auto;margin-right:auto}
+    .hero .cta-row{flex-direction:column;align-items:stretch;max-width:420px;margin:0 auto}
+    .hero .cta-row .btn,.contact .btn{text-align:center;justify-content:center}
+    .trust{justify-content:center}
+    section .wrap > .kicker,section .wrap > h2,section .wrap > .sub{text-align:center}
+    section .wrap > .sub{margin-left:auto;margin-right:auto}
+    .tool-row .kicker,.tool-row h3.tool-h{text-align:center}
+    .rev-grid{grid-template-columns:1fr}
+    .rev-empty{text-align:center}
+    .contact .wrap > div{flex-direction:column;align-items:stretch;max-width:340px;margin:0 auto}
+    .plans-notes{grid-template-columns:1fr}
+  }
   @media(max-width:860px){
     .axes,.steps5,.principles{grid-template-columns:1fr}
   }
@@ -306,8 +323,8 @@
       <h1>Des processus <em>digitalisés</em>, des outils à jour, des entreprises <em>connectées</em>.</h1>
       <p class="lead">DBS accompagne les entreprises de tous les secteurs pour installer des systèmes et des processus modernes, entièrement digitalisés. Chaque entreprise accompagnée devient une pièce du domino. <b>Notre objectif final : l'écosystème DBS</b>, où les acteurs de l'industrie et du commerce se connectent, échangent et travaillent ensemble.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#contact">Parler de mon projet</a>
-        <a class="btn btn-ghost" style="border-color:#59d6bd;color:#59d6bd" href="#services">Découvrir nos services</a>
+        <a class="btn btn-primary" href="https://github.com/Dominos-DBS/dbs-releases/releases/latest/download/DBS-Setup-latest.exe" target="_blank" rel="noopener">⬇ Télécharger l'essai gratuit — 15 jours</a>
+        <a class="btn btn-ghost" style="border-color:#59d6bd;color:#59d6bd" href="#contact">Parler de mon projet</a>
       </div>
       <div class="trust">
         <span>Accompagnement sur site ou à distance</span>
@@ -566,7 +583,7 @@
     <div class="plans-notes">
       <div><b>Vos partenaires ne paient rien.</b> Les clients et partenaires que vous invitez accèdent gratuitement. Jamais de prix par utilisateur.</div>
       <div><b>Évolutif sans perte.</b> Passez de DBS Link au Pack complet : les frais de mise en place déjà payés sont déduits.</div>
-      <div><b>Essayez avant de choisir.</b> DBS ERP s'essaie gratuitement pendant 15 jours, sans engagement ni carte bancaire.</div>
+      <div><b>Essayez avant de choisir.</b> DBS ERP s'essaie gratuitement pendant 15 jours, sans engagement ni carte bancaire. <a href="https://github.com/Dominos-DBS/dbs-releases/releases/latest/download/DBS-Setup-latest.exe" target="_blank" rel="noopener">⬇ Télécharger l'essai</a></div>
     </div>
   </div>
 </section>
